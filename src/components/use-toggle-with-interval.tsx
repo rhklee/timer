@@ -40,7 +40,8 @@ function reducerWith(states: any[]) {
 
 interface ReturnType<T> {
     toggle: (isOn: boolean) => void;
-    currentState: T
+    currentState: T;
+    isActive: boolean;
 }
 
 interface Props<T> {
@@ -75,6 +76,7 @@ export function useToggleWithInterval(props: Props<string>): ReturnType<any> {
 
     return {
         toggle,
-        currentState: state
+        currentState: state,
+        isActive
     }
 }

@@ -19,7 +19,8 @@ function App() {
 
     const {
         toggle,
-        currentState
+        currentState,
+        isActive: togglerIsActive
     } = useToggleWithInterval({states: [
         'App',
             'App tm_background_color_red',
@@ -116,6 +117,11 @@ function App() {
                 <button onClick={toggleTimer}>
                     {buttonText(isTimerActive)}
                 </button>
+                {togglerIsActive && (
+                <button onClick={() => { toggle(false) }}>
+                    Stop flashing
+                </button>
+                )}
             </div>
         </div>
     );
