@@ -40,25 +40,28 @@ function defaultTimer(): Timer {
     };
 }
 
-interface UseTimerReturnType {
+interface ReturnType {
     timerState: Timer;
     setTimerState: (newTimerState: Timer) => void;
     isTimerActive: boolean;
+    isEndState: boolean;
     toggleTimer: () => void;
 }
 
-export function useTimer(): UseTimerReturnType {
+export function useTimer(): ReturnType {
     const [timerState, setTimerState] = useState<Timer>(defaultTimer());
     const [intervalTimerRef, setIntervalTimerRef] = useState<
         NodeJS.Timeout | undefined
     >(undefined);
     const [isTimerActive, setIsTimerActive] = useState(false);
+    const [isEndState, setIsEndState] = useState(false);
 
     const updateTimerState = () => {
         setTimerState((prevState) => {
             const updatedTime = secondsToTimer(convertToSeconds(prevState) - 1);
             if (timerEnd(updatedTime)) {
                 setIsTimerActive(false);
+                setIsEndState(true);
             }
             return updatedTime;
         });
@@ -70,6 +73,7 @@ export function useTimer(): UseTimerReturnType {
             const intervalId = setInterval(updateTimerState, 1000);
             // @ts-ignore
             setIntervalTimerRef(intervalId);
+            setIsEndState(false);
         } else {
             document.title = 'Timer Stopped';
             if (intervalTimerRef !== undefined) clearInterval(intervalTimerRef);
@@ -84,6 +88,7 @@ export function useTimer(): UseTimerReturnType {
         timerState,
         setTimerState,
         isTimerActive,
+        isEndState,
         toggleTimer
     };
 }

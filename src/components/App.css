@@ -37,6 +37,37 @@
     }
 }
 
+.App, .App>div {
+    height: 100%;
+}
+
 .tm_rows {
     margin-top: 1%;
+}
+
+.tm_time_text {
+    font-size: 30vh;
+}
+
+.tm_background_color_delta {
+    background-color: #db92a3;
+}
+
+.tm_background_color_red {
+    background-color: #FF0018;
+}
+.tm_background_color_orange {
+    background-color: #FFA52C;
+}
+.tm_background_color_yellow {
+    background-color: #FFFF41;
+}
+.tm_background_color_green {
+    background-color: #008018;
+}
+.tm_background_color_blue {
+    background-color: #0000F9;
+}
+.tm_background_color_purple {
+    background-color: #86007D;
 }

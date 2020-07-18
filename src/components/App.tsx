@@ -1,6 +1,7 @@
-import React, { ChangeEvent } from 'react';
+import React, {ChangeEvent, useEffect} from 'react';
 import './App.css';
-import { Timer, useTimer } from './timer';
+import { Timer, useTimer } from './use-timer';
+import {useToggleWithInterval} from "./use-toggle-with-interval";
 
 function padInt(int: number): string {
     if (int.toString().length === 2) return int.toString();
@@ -12,8 +13,26 @@ function App() {
         timerState,
         setTimerState,
         isTimerActive,
+        isEndState,
         toggleTimer
     } = useTimer();
+
+    const {
+        toggle,
+        currentState
+    } = useToggleWithInterval({states: [
+        'App',
+            'App tm_background_color_red',
+            'App tm_background_color_orange',
+            'App tm_background_color_yellow',
+            'App tm_background_color_green',
+            'App tm_background_color_blue',
+            'App tm_background_color_purple'
+        ], toggleInterval: 750})
+
+    useEffect(() => {
+        toggle(isEndState)
+    }, [isEndState])
 
     const timerText = (timerState: Timer): string => {
         return `${padInt(timerState.hours)}:${padInt(
@@ -57,10 +76,16 @@ function App() {
         }
     };
 
+    const appClassName = currentState.state;
+
     return (
-        <div className='App'>
-            <div className={'tm_rows'}>
-                <h1>{timerText(timerState)}</h1>
+        <div className={appClassName}>
+            {/*endstate: {isEndState.toString()}*/}
+            {/*{JSON.stringify(currentState)}*/}
+            {' '}
+
+            <div>
+                <h1 className={'tm_time_text'}>{timerText(timerState)}</h1>
             </div>
 
             {!isTimerActive && (
