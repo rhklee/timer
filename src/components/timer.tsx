@@ -1,27 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import './App.css';
+import { useEffect, useState } from 'react';
 
 interface Timer {
     seconds: number;
     minutes: number;
     hours: number;
-}
-
-function timerEnd(timer: Timer): boolean {
-    return timer.seconds === 0 && timer.minutes === 0 && timer.hours === 0;
-}
-
-function defaultTimer(): Timer {
-    return {
-        seconds: 5,
-        minutes: 0,
-        hours: 0
-    };
-}
-
-function padInt(int: number): string {
-    if (int.toString().length === 2) return int.toString();
-    else return `0${int.toString()}`;
 }
 
 function convertToSeconds(timerState: Timer): number {
@@ -46,7 +28,25 @@ function secondsToTimer(totalSeconds: number): Timer {
     };
 }
 
-function App() {
+function timerEnd(timer: Timer): boolean {
+    return timer.seconds === 0 && timer.minutes === 0 && timer.hours === 0;
+}
+
+function defaultTimer(): Timer {
+    return {
+        seconds: 5,
+        minutes: 0,
+        hours: 0
+    };
+}
+
+interface UseTimerReturnType {
+    timerState: Timer;
+    isTimerActive: boolean;
+    toggleTimer: () => void;
+}
+
+export function useTimer(): UseTimerReturnType {
     const [timerState, setTimerState] = useState<Timer>(defaultTimer());
     const [intervalTimerRef, setIntervalTimerRef] = useState<
         NodeJS.Timeout | undefined
@@ -75,27 +75,13 @@ function App() {
         }
     }, [isTimerActive]);
 
-    const timerText = (timerState: Timer): string => {
-        return `${padInt(timerState.hours)}:${padInt(
-            timerState.minutes
-        )}:${padInt(timerState.seconds)}`;
-    };
-    
-    const buttonText = (isTimerActive: boolean): string => {
-        return isTimerActive ? 'Stop Timer' : 'Start Timer';
-    };
-
     const toggleTimer = () => {
         setIsTimerActive(!isTimerActive);
     };
 
-    return (
-        <div className='App'>
-            <h1>{timerText(timerState)}</h1>
-
-            <button onClick={toggleTimer}>{buttonText(isTimerActive)}</button>
-        </div>
-    );
+    return {
+        timerState,
+        isTimerActive,
+        toggleTimer
+    };
 }
-
-export default App;
