@@ -1,7 +1,7 @@
-import React, {ChangeEvent, useEffect} from 'react';
+import React, { ChangeEvent, useEffect } from 'react';
 import './App.css';
 import { Timer, useTimer } from './use-timer';
-import {useToggleWithInterval} from "./use-toggle-with-interval";
+import { useToggleWithInterval } from './use-toggle-with-interval';
 
 function padInt(int: number): string {
     if (int.toString().length === 2) return int.toString();
@@ -21,19 +21,22 @@ function App() {
         toggle,
         currentState,
         isActive: togglerIsActive
-    } = useToggleWithInterval({states: [
-        'App',
+    } = useToggleWithInterval({
+        states: [
+            'App',
             'App tm_background_color_red',
             'App tm_background_color_orange',
             'App tm_background_color_yellow',
             'App tm_background_color_green',
             'App tm_background_color_blue',
             'App tm_background_color_purple'
-        ], toggleInterval: 750})
+        ],
+        toggleInterval: 750
+    });
 
     useEffect(() => {
-        toggle(isEndState)
-    }, [isEndState])
+        toggle(isEndState);
+    }, [isEndState]);
 
     const timerText = (timerState: Timer): string => {
         return `${padInt(timerState.hours)}:${padInt(
@@ -81,14 +84,9 @@ function App() {
 
     return (
         <div className={appClassName}>
-            {/*endstate: {isEndState.toString()}*/}
-            {/*{JSON.stringify(currentState)}*/}
-            {' '}
-
             <div>
                 <h1 className={'tm_time_text'}>{timerText(timerState)}</h1>
             </div>
-
             {!isTimerActive && (
                 <div className={'tm_rows'}>
                     Time to Countdown:
@@ -112,15 +110,18 @@ function App() {
                     />
                 </div>
             )}
-
             <div className={'tm_rows'}>
                 <button onClick={toggleTimer}>
                     {buttonText(isTimerActive)}
                 </button>
                 {togglerIsActive && (
-                <button onClick={() => { toggle(false) }}>
-                    Stop flashing
-                </button>
+                    <button
+                        onClick={() => {
+                            toggle(false);
+                        }}
+                    >
+                        Stop flashing
+                    </button>
                 )}
             </div>
         </div>

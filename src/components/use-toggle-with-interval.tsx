@@ -1,4 +1,4 @@
-import React, {useEffect, useReducer, useState} from 'react'
+import React, { useEffect, useReducer, useState } from 'react';
 
 enum ActionType {
     NEXT_STATE,
@@ -17,26 +17,29 @@ interface CurrentState<T> {
 function reducerWith(states: any[]) {
     const numStates = states.length;
 
-    return function reducer(currentState: CurrentState<any>, action: Action): CurrentState<any> {
-        console.log("numStates = ", numStates)
+    return function reducer(
+        currentState: CurrentState<any>,
+        action: Action
+    ): CurrentState<any> {
+        console.log('numStates = ', numStates);
         switch (action.type) {
             case ActionType.NEXT_STATE:
                 return {
-                    state: states[(currentState.stateIndex + 1) % states.length],
+                    state:
+                        states[(currentState.stateIndex + 1) % states.length],
                     stateIndex: currentState.stateIndex + 1
-                }
+                };
 
             case ActionType.RESET:
                 return {
                     state: states[0],
                     stateIndex: 0
-                }
+                };
             default:
                 return currentState;
         }
-    }
+    };
 }
-
 
 interface ReturnType<T> {
     toggle: (isOn: boolean) => void;
@@ -55,22 +58,23 @@ export function useToggleWithInterval(props: Props<string>): ReturnType<any> {
         state: props.states[0],
         stateIndex: 0
     });
-    const [intervalRef, setIntervalRef] = useState<NodeJS.Timeout | undefined>(undefined);
+    const [intervalRef, setIntervalRef] = useState<NodeJS.Timeout | undefined>(
+        undefined
+    );
 
     const toggle = (isOn: boolean) => {
-        if(!isOn)
-            dispatch({ type: ActionType.RESET })
-        setIsActive(isOn)
+        if (!isOn) dispatch({ type: ActionType.RESET });
+        setIsActive(isOn);
     };
 
     useEffect(() => {
-        if(isActive) {
+        if (isActive) {
             const intervalRef = setInterval(() => {
-                dispatch({ type: ActionType.NEXT_STATE })
-            }, props.toggleInterval)
+                dispatch({ type: ActionType.NEXT_STATE });
+            }, props.toggleInterval);
             setIntervalRef(intervalRef);
         } else {
-            if(intervalRef !== undefined) clearInterval(intervalRef)
+            if (intervalRef !== undefined) clearInterval(intervalRef);
         }
     }, [isActive]);
 
@@ -78,5 +82,5 @@ export function useToggleWithInterval(props: Props<string>): ReturnType<any> {
         toggle,
         currentState: state,
         isActive
-    }
+    };
 }
