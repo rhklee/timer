@@ -1,26 +1,35 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 
+function now(): number {
+    return new Date().getTime();
+}
+
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const [currentTime, setCurrentTime] = useState(now());
+
+    const updateViewTime = () => {
+        setCurrentTime(now());
+    };
+
+    useEffect(() => {
+        const intervalTimer = setInterval(updateViewTime, 1000);
+
+        return () => {
+            clearInterval(intervalTimer);
+        };
+    }, []);
+
+    return (
+        <div className='App'>
+            <head></head>
+            <body>
+                <div>
+                    <h1>{currentTime}</h1>
+                </div>
+            </body>
+        </div>
+    );
 }
 
 export default App;
