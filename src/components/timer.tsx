@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-interface Timer {
+export interface Timer {
     seconds: number;
     minutes: number;
     hours: number;
@@ -42,6 +42,7 @@ function defaultTimer(): Timer {
 
 interface UseTimerReturnType {
     timerState: Timer;
+    setTimerState: (newTimerState: Timer) => void;
     isTimerActive: boolean;
     toggleTimer: () => void;
 }
@@ -76,11 +77,12 @@ export function useTimer(): UseTimerReturnType {
     }, [isTimerActive]);
 
     const toggleTimer = () => {
-        setIsTimerActive(!isTimerActive);
+        if (!timerEnd(timerState)) setIsTimerActive(!isTimerActive);
     };
 
     return {
         timerState,
+        setTimerState,
         isTimerActive,
         toggleTimer
     };
